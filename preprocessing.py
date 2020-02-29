@@ -24,4 +24,51 @@ def flat_preprocess(fname):
 	np.save("../flat_preprocess/test.npy", test.to_numpy())
 	np.save("../flat_preprocess/valid.npy", valid.to_numpy())
 
-flat_preprocess(fname)
+def getIndex(df):
+	values = df.values
+	last_index = 0
+	current_period = [0]
+	periods = []
+
+	for i in range(1,len(values)):
+		if last_index == df.iloc[i]['original_index'] - 1:
+			current_period.append(i)
+			last_index+=1
+		else:
+			periods.append(current_period)
+			current_period = [i]
+			last_index = df.iloc[i]['original_index']
+	return periods
+
+# flat_preprocess(fname)
+#%%
+def temporalise(indices, time_steps):
+	return [indices[i : i+time_steps] for i in range(len(indices) + 1 - time_steps)]
+
+def remove_anom(df):
+	anoms = [10634, 36136, 57280, 57618, 60545, 63144, 118665, 128524, 131118]
+	predicate = lambda x, y: abs(x + 3 - y) > 4
+	for anom in anoms:
+		df = df[predicate(df["original_index"], anom)]
+	return df
+
+def preprocess(fname):
+	df = remove_anom(pd.read_csv(fname).dropna())
+	indices = getIndex(df)
+	del df["original_index"]
+	indices = [y for x in [temporalise(i, 10) for i in indices] for y in x]
+	u = df.mean()
+	s = df.std()
+	output = df.apply(lambda x: (x - u) / s, axis = 1)
+	arr = np.zeros((len(indices), 10, 362))
+	for i in range(len(indices)):
+		a = indices[i]
+		arr[i] = output[a[0]: a[-1] + 1].to_numpy()
+	train, test = train_test_split(arr, train_size = 0.8)
+	train, valid = train_test_split(train, train_size = 0.8)
+	np.save("../preprocess/train.npy", train)
+	np.save("../preprocess/test.npy", test)
+	np.save("../preprocess/valid.npy", valid)
+
+#%%
+preprocess("../shell_data/clean_dataset.csv")

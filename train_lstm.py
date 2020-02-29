@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Feb 29 16:42:26 2020
+Created on Sat Feb 29 22:54:16 2020
 
 @author: Akshat
 """
 
 from keras.models import load_model, save_model
-from keras.callbacks import TensorBoard
 import numpy as np
+from keras.callbacks import TensorBoard
 from os import listdir
 
-RUN_NO = len(listdir("flat/"))
+RUN_NO = len(listdir("lstm/"))
 
-model = load_model("models/flat_model.h5")
+model = load_model("models/model.h5")
 train = np.load("../flat_preprocess/train.npy")
 valid = np.load("../flat_preprocess/valid.npy")
 
@@ -21,6 +21,6 @@ model.fit(train, train,
           batch_size=50,
           shuffle=True,
           validation_data=(valid, valid),
-          callbacks=[TensorBoard(log_dir='./flat/' + str(RUN_NO) + "/")])
+          callbacks=[TensorBoard(log_dir='./lstm/' + str(RUN_NO) + "/")])
 
-save_model(model, "trained_models/flat0.h5")
+save_model(model, "trained_models/lstm0.h5")
