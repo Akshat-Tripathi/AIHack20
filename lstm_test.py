@@ -9,7 +9,7 @@ from keras.models import load_model
 import numpy as np
 
 test = np.load("../preprocess/test.npy")
-model = load_model("trained_models/lstm00.h5")
+model = load_model("trained_models/lstm21.h5")
 s = np.load("std.npy")
 u = np.load("mean.npy")
 pred = model.predict(test)

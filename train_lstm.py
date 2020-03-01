@@ -12,16 +12,16 @@ from os import listdir
 
 RUN_NO = len(listdir("lstm/"))
 
-model = load_model("trained_models/lstm01.h5")
+model = load_model("models/lstm2.h5")
 train = np.load("../preprocess/train.npy")
 valid = np.load("../preprocess/valid.npy")
 
-for i in range(20):
+for i in range(40):
 	model.fit(train, train,
-	          epochs=10,
+	          epochs=5,
 	          batch_size=50,
 	          shuffle=True,
 	          validation_data=(valid, valid),
 	          callbacks=[TensorBoard(log_dir='./lstm/' + str(RUN_NO) + "/")])
 
-	save_model(model, "trained_models/lstm0" + str(i) + ".h5")
+	save_model(model, "trained_models/lstm2" + str(i) + ".h5")
