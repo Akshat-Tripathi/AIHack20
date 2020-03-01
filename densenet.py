@@ -14,11 +14,11 @@ FEATURES = 362
 model = Sequential()
 model.add(Dense(300, activation = "relu", input_shape = (FEATURES,)))
 model.add(Dense(200, activation = "relu"))
-model.add(Dense(50, activation = "relu"))
+model.add(Dense(150, activation = "relu"))
 model.add(Dense(200, activation = "relu"))
 model.add(Dense(FEATURES, activation = "relu"))
 
 model.compile(optimizer = "adam", loss = "mse", metrics = ["accuracy"])
 model.summary()
 
-save_model(model, "models/flat_model1.h5")
+save_model(model, "models/flat_model.h5")

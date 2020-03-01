@@ -12,7 +12,7 @@ from os import listdir
 
 RUN_NO = len(listdir("flat/"))
 
-model = load_model("models/flat_model1.h5")
+model = load_model("models/flat_model.h5")
 train = np.load("../flat_preprocess/train.npy")
 valid = np.load("../flat_preprocess/valid.npy")
 
@@ -23,4 +23,4 @@ model.fit(train, train,
           validation_data=(valid, valid),
           callbacks=[TensorBoard(log_dir='./flat/' + str(RUN_NO) + "/")])
 
-save_model(model, "trained_models/flat1.h5")
+save_model(model, "trained_models/flat0.h5")
