@@ -25,10 +25,12 @@ y = np.zeros((18, 1))
 y[9:] = 1
 
 joined = np.hstack((x, y))
-# joined = joined[~np.isnan(joined).any(axis=1)]
+joined = joined[~np.isnan(joined).any(axis=1)]
 
-# x, y = joined[:, :9], joined[:, 9:]
+x, y = joined[:, :9], joined[:, 9:]
 #%%
-model.fit(x, y, epochs = 100)
+model.fit(x, y, epochs = 10000)
 
 print(model.predict(x))
+
+save_model(model, "anomaly_detector.h5")

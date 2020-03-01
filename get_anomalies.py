@@ -12,7 +12,6 @@ def get_anoms(fname):
 	df = pd.read_csv(fname).dropna()
 	anomalies = np.zeros((0, 10, 362))
 	anoms = [10634, 36136, 57280, 57618, 60545, 63144, 118665, 128524, 131118]
-	p = 0
 	for anom in anoms:
 		upper = df[df["original_index"] > anom - 10]
 		lower = upper[upper["original_index"] <= anom].to_numpy()[:, :362]
