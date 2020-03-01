@@ -7,7 +7,7 @@ Created on Sun Mar  1 02:47:24 2020
 
 import numpy as np
 from sklearn.decomposition import PCA
-from sklearn.cluster import k_means
+from sklearn.cluster import KMeans
 import pandas as pd
 from get_anomalies import get_anoms
 
@@ -27,8 +27,12 @@ pca = PCA(3)
 components = pca.fit_transform(data)
 an_comp = pca.transform(latent_space)
 
-_, clusters, _ = k_means(data, 5)
+k_means = KMeans(n_clusters=10).fit(data)
+clusters = k_means.predict(data)
+novel = k_means.predict(latent_space)
 
+for cluster in novel:
+	print(np.count_nonzero(clusters == cluster) / len(clusters))
 #%%
 components = pd.DataFrame(
 	np.vstack(
@@ -39,7 +43,7 @@ components = pd.DataFrame(
 				)),
 			np.hstack((
 				an_comp,
-				np.ones((len(an_comp), 1)) * 10
+				novel.reshape((5, 1))
 				))
 		)
 	)
