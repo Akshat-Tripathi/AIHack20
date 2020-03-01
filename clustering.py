@@ -23,7 +23,7 @@ model = load_model("encoder.h5")
 latent_space = model.predict(anomalies)
 
 #%%
-pca = PCA(100)
+pca = PCA(3)
 components = pca.fit_transform(data)
 an_comp = pca.transform(latent_space)
 
