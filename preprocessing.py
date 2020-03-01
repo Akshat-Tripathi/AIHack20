@@ -16,6 +16,8 @@ def flat_preprocess(fname):
 	#TODO save u and s
 	u = df.mean()
 	s = df.std()
+	np.save("std_flat.npy", s.to_numpy())
+	np.save("mean_flat.npy", u.to_numpy())
 	output = df.apply(lambda x: (x - u) / s, axis = 1)
 	#TODO filter out all anomalies
 	train, test = train_test_split(output, train_size = 0.7)
@@ -40,8 +42,6 @@ def getIndex(df):
 			last_index = df.iloc[i]['original_index']
 	return periods
 
-# flat_preprocess(fname)
-#%%
 def temporalise(indices, time_steps):
 	return [indices[i : i+time_steps] for i in range(len(indices) + 1 - time_steps)]
 
@@ -59,6 +59,8 @@ def preprocess(fname):
 	indices = [y for x in [temporalise(i, 10) for i in indices] for y in x]
 	u = df.mean()
 	s = df.std()
+	np.save("std.npy", s.to_numpy())
+	np.save("mean.npy", u.to_numpy())
 	output = df.apply(lambda x: (x - u) / s, axis = 1)
 	arr = np.zeros((len(indices), 10, 362))
 	for i in range(len(indices)):
@@ -71,4 +73,4 @@ def preprocess(fname):
 	np.save("../preprocess/valid.npy", valid)
 
 #%%
-preprocess("../shell_data/clean_dataset.csv")
+u, s = preprocess("../shell_data/clean_dataset.csv")
